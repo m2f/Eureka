@@ -87,11 +87,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         self.placeholderLabel = placeholderLabel
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         placeholderLabel.numberOfLines = 0
-        if #available(iOS 13.0, *) {
-            placeholderLabel.textColor = UIColor.tertiaryLabel
-        } else {
-            placeholderLabel.textColor = UIColor(white: 0, alpha: 0.22)
-        }
+        placeholderLabel.textColor = UIColor(white: 0, alpha: 0.22)
         placeholderLabel.font = textView.font
         contentView.addSubview(placeholderLabel)
     }
@@ -138,11 +134,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         textLabel?.text = nil
         detailTextLabel?.text = nil
         textView.isEditable = !row.isDisabled
-        if #available(iOS 13.0, *) {
-            textView.textColor = row.isDisabled ? .tertiaryLabel : .label
-        } else {
-            textView.textColor = row.isDisabled ? .gray : .black
-        }
+        textView.textColor = row.isDisabled ? .gray : .darkGray
         textView.text = row.displayValueFor?(row.value)
         placeholderLabel?.text = (row as? TextAreaConformance)?.placeholder
         placeholderLabel?.isHidden = textView.text.count != 0
@@ -312,7 +304,7 @@ open class TextAreaCell: _TextAreaCell<String>, CellType {
 open class AreaRow<Cell: CellType>: FormatteableRow<Cell>, TextAreaConformance where Cell: BaseCell, Cell: AreaCell {
 
     open var placeholder: String?
-    open var textAreaHeight = TextAreaHeight.fixed(cellHeight: 110)
+    open var textAreaHeight = TextAreaHeight.fixed(cellHeight: 40)
     open var textAreaMode = TextAreaMode.normal
     /// The percentage of the cell that should be occupied by the remaining space to the left of the textArea. This is equivalent to the space occupied by a title in FieldRow, making the textArea aligned to fieldRows using the same titlePercentage. This behavior works only if the cell does not contain an image, due to its automatically set constraints in the cell.
     open var titlePercentage: CGFloat?

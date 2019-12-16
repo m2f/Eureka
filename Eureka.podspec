@@ -7,10 +7,11 @@ Pod::Spec.new do |s|
   s.social_media_url = 'http://twitter.com/xmartlabs'
   s.authors = { 'Martin Barreto' => 'martin@xmartlabs.com', 'Mathias Claassen' => 'mathias@xmartlabs.com' }
   s.source = { :git => 'https://github.com/xmartlabs/Eureka.git', :tag => s.version }
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
   s.ios.frameworks = 'UIKit', 'Foundation'
   s.source_files = 'Source/**/*.swift'
   s.resources = 'Source/Resources/Eureka.bundle'
   s.requires_arc = true
   s.swift_version = '5.0'
+  s.dependency 'GMStepper'
 end

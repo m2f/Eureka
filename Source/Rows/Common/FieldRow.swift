@@ -145,6 +145,10 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
 
         let textField = UITextField()
         self.textField = textField
+        textField.textColor = .darkGray
+        textField.keyboardType = .namePhonePad
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
         textField.translatesAutoresizingMaskIntoConstraints = false
 
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -198,14 +202,13 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
     open override func setup() {
         super.setup()
         selectionStyle = .none
-
+        height = { 50.0 }
         if !awakeFromNibCalled {
             titleLabel?.addObserver(self, forKeyPath: "text", options: [.new, .old], context: nil)
             observingTitleText = true
             imageView?.addObserver(self, forKeyPath: "image", options: [.new, .old], context: nil)
         }
         textField.addTarget(self, action: #selector(_FieldCell.textFieldDidChange(_:)), for: .editingChanged)
-
     }
 
     open override func update() {
@@ -229,30 +232,16 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         } else {
             textLabel?.text = nil
             titleLabel?.text = row.title
-            if #available(iOS 13.0, *) {
-                titleLabel?.textColor = row.isDisabled ? .tertiaryLabel : .label
-            } else {
-                titleLabel?.textColor = row.isDisabled ? .gray : .black
-            }
         }
         textField.delegate = self
         textField.text = row.displayValueFor?(row.value)
         textField.isEnabled = !row.isDisabled
-        if #available(iOS 13.0, *) {
-            textField.textColor = row.isDisabled ? .tertiaryLabel : .label
-        } else {
-            textField.textColor = row.isDisabled ? .gray : .black
-        }
-        textField.font = .preferredFont(forTextStyle: .body)
         if let placeholder = (row as? FieldRowConformance)?.placeholder {
             if let color = (row as? FieldRowConformance)?.placeholderColor {
                 textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: color])
             } else {
                 textField.placeholder = (row as? FieldRowConformance)?.placeholder
             }
-        }
-        if row.isHighlighted {
-            titleLabel?.textColor = tintColor
         }
     }
 
@@ -295,7 +284,8 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
                 views["titleLabel"] = titleLabel
                 dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[titleLabel]-3-[textField]", options: .alignAllLeading, metrics: nil, views: views)
                 // Here we are centering the textField with an offset of -4. This replicates the exact behavior of the default UITableViewCell with .subtitle style
-                dynamicConstraints.append(NSLayoutConstraint(item: textField!, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: -4))
+                dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1, constant: 4))
+                dynamicConstraints.append(NSLayoutConstraint(item: textField!, attribute: .top, relatedBy: .equal, toItem: titleLabel, attribute: .bottom, multiplier: 1, constant: 4))
                 dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: textField, attribute: .centerX, multiplier: 1, constant: 0))
             } else {
                 dynamicConstraints.append(NSLayoutConstraint(item: textField!, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))
