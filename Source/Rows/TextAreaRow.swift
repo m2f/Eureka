@@ -195,7 +195,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     }
 
     open func textViewDidChange(_ textView: UITextView) {
-
+        formViewController()?.textInputDidChange(textView, cell: self)
         if let textAreaConformance = row as? TextAreaConformance, case .dynamic = textAreaConformance.textAreaHeight, let tableView = formViewController()?.tableView {
             let currentOffset = tableView.contentOffset
             UIView.performWithoutAnimation {
@@ -282,9 +282,12 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
                                                          multiplier: 1 - titlePercentage,
                                                          constant: -sideSpaces))
         } else {
+            dynamicConstraints.append(NSLayoutConstraint(item: textView, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1, constant: 0))
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-[textView]-|", options: [], metrics: nil, views: views))
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-[label]-|", options: [], metrics: nil, views: views))
-        }
+            dynamicConstraints.append(NSLayoutConstraint(item: textView, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1, constant: 0))
+            dynamicConstraints.append(NSLayoutConstraint(item: placeholderLabel, attribute: .top, relatedBy: .equal, toItem: textView, attribute: .top, multiplier: 1, constant: 0))
+       }
         contentView.addConstraints(dynamicConstraints)
     }
 

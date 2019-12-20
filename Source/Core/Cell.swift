@@ -126,8 +126,13 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
         textLabel?.text = row.title
         textLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         textLabel?.textColor = .darkGray
-        detailTextLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
-        detailTextLabel?.textColor = .darkGray
+        if let displayText = row.displayValueFor?(row.value) {
+            detailTextLabel?.text = displayText
+            detailTextLabel?.textColor = .darkGray
+        } else {
+            detailTextLabel?.text = (row as? NoValueDisplayTextConformance)?.noValueDisplayText
+            detailTextLabel?.textColor = UIColor(white: 0, alpha: 0.22)
+        }
     }
 
     /**
