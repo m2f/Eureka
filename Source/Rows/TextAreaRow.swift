@@ -195,7 +195,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     }
 
     open func textViewDidChange(_ textView: UITextView) {
-        formViewController()?.textInputDidChange(textView, cell: self)
+
         if let textAreaConformance = row as? TextAreaConformance, case .dynamic = textAreaConformance.textAreaHeight, let tableView = formViewController()?.tableView {
             let currentOffset = tableView.contentOffset
             UIView.performWithoutAnimation {
@@ -282,12 +282,9 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
                                                          multiplier: 1 - titlePercentage,
                                                          constant: -sideSpaces))
         } else {
-            dynamicConstraints.append(NSLayoutConstraint(item: textView, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1, constant: 0))
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-[textView]-|", options: [], metrics: nil, views: views))
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-[label]-|", options: [], metrics: nil, views: views))
-            dynamicConstraints.append(NSLayoutConstraint(item: textView, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1, constant: 0))
-            dynamicConstraints.append(NSLayoutConstraint(item: placeholderLabel, attribute: .top, relatedBy: .equal, toItem: textView, attribute: .top, multiplier: 1, constant: 0))
-       }
+        }
         contentView.addConstraints(dynamicConstraints)
     }
 
@@ -307,7 +304,7 @@ open class TextAreaCell: _TextAreaCell<String>, CellType {
 open class AreaRow<Cell: CellType>: FormatteableRow<Cell>, TextAreaConformance where Cell: BaseCell, Cell: AreaCell {
 
     open var placeholder: String?
-    open var textAreaHeight = TextAreaHeight.fixed(cellHeight: 40)
+    open var textAreaHeight = TextAreaHeight.fixed(cellHeight: 110)
     open var textAreaMode = TextAreaMode.normal
     /// The percentage of the cell that should be occupied by the remaining space to the left of the textArea. This is equivalent to the space occupied by a title in FieldRow, making the textArea aligned to fieldRows using the same titlePercentage. This behavior works only if the cell does not contain an image, due to its automatically set constraints in the cell.
     open var titlePercentage: CGFloat?
