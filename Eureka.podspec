@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Eureka'
-  s.version = '5.1.1x'
+  s.version = '5.1.2x'
   s.license = 'MIT'
   s.summary = 'Elegant iOS Forms in pure Swift'
   s.homepage = 'https://github.com/xmartlabs/Eureka'
@@ -13,5 +13,4 @@ Pod::Spec.new do |s|
   s.resources = 'Source/Resources/Eureka.bundle'
   s.requires_arc = true
   s.swift_version = '5.0'
-  s.dependency 'GMStepper'
 end

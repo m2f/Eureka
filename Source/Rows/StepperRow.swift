@@ -7,14 +7,13 @@
 //
 
 import UIKit
-import GMStepper
 
 // MARK: StepperCell
 
 open class StepperCell: Cell<Double>, CellType {
   
   
-    @IBOutlet open weak var stepper: GMStepper!
+    @IBOutlet open weak var stepper: UIStepper!
     @IBOutlet open weak var valueLabel: UILabel!
     @IBOutlet open weak var titleLabel: UILabel!
 
@@ -45,17 +44,7 @@ open class StepperCell: Cell<Double>, CellType {
             textLabel?.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
             self.titleLabel = title
          
-            let stepper = GMStepper()
-            stepper.minimumValue = 0
-            stepper.buttonsBackgroundColor = .white
-            stepper.buttonsTextColor = .darkGray
-            stepper.borderWidth = 1
-            stepper.buttonsFont = UIFont.systemFont(ofSize: 16, weight: .bold)
-            stepper.labelTextColor = .darkGray
-            stepper.labelBackgroundColor = .white
-            stepper.labelWidthWeight = 0.3
-            stepper.heightAnchor.constraint(equalToConstant: 32).isActive = true
-            stepper.widthAnchor.constraint(equalToConstant: 120).isActive = true
+            let stepper = UIStepper()
             stepper.translatesAutoresizingMaskIntoConstraints = false
             stepper.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
             self.stepper = stepper
@@ -92,7 +81,7 @@ open class StepperCell: Cell<Double>, CellType {
         stepper.alpha = row.isDisabled ? 0.3 : 1.0
         valueLabel?.textColor = tintColor
         valueLabel?.alpha = row.isDisabled ? 0.3 : 1.0
-        //valueLabel?.text = row.displayValueFor?(row.value)
+        valueLabel?.text = row.displayValueFor?(row.value)
     }
 
     @objc func valueChanged() {
